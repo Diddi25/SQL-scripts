@@ -1,0 +1,65 @@
+
+CREATE VIEW get_ensemble_and_genre_view AS 
+    SELECT
+        lt, lesson_type,
+        l.genre, 
+    FROM
+        public.lesson l 
+    JOIN
+        public.lesson_type lt ON l.lesson_id = lt_lesson_id
+
+CREATE VIEW get_nr_of_bookings_view AS 
+    SELECT
+        eg.instructor_id,
+        eg.name,
+        COUNT(b.booking_id) AS num_booked_seats, 
+        COUNT(b.booking_id) < COUNT(nsl.student_id) AS is_full
+    FROM 
+        get_ensemble_and_genre_view eg
+    LEFT JOIN
+        public.nr_students_in_lesson nsl ON l.lesson_id = nsl.lesson_id
+    LEFT JOIN
+        public.bookings b ON l.lesson_id = b.lesson_id
+
+CREATE VIEW get_future_bookings_view AS 
+    SELECT
+        wb.instructor_id,
+        wb.name,
+        num_booked_seats,
+        is_full,
+        EXTRACT(DOW FROM b.timeslots) AS weekday,
+    FROM 
+        get_nr_of_bookings_view wb
+    WHERE
+        wb.timeslots >= CURRENT_DATE + INTERVAL '1 day'
+    AND 
+        wb.timeslots < CURRENT_DATE + INTERVAL '1 week' 
+    GROUP BY
+        wb.lesson_type, wb.genre, weekday
+
+SELECT 
+    fb.lesson_type, 
+    fb.genre, 
+    weekday,
+CASE
+    WHEN 
+        is_full THEN 'Full Booked'
+    WHEN 
+        num_booked_seats >= COUNT(fb.student_id) - 2 THEN '1-2 Seats Left' 
+    ELSE 
+        'More Seats Left'
+END AS 
+    booking_status
+FROM 
+    get_future_bookings_view fb
+ORDER BY
+    genre, 
+    weekday;
+
+| lesson_type | genre | weekday | booking_status | 
+|-------------|----------|---------|-------------------|
+| Ensemble | Jazz | 1 | MoreSeatsLeft |
+| Ensemble | Rock | 2 | 1-2SeatsLeft |
+| Ensemble | Classical| 3 | Full Booked |
+| Ensemble | Pop | 4 | MoreSeatsLeft | 
+| Ensemble | Jazz | 5 | 1-2SeatsLeft |

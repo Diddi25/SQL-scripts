@@ -1,0 +1,64 @@
+
+CREATE VIEW total_lessons_view AS 
+    SELECT
+        COUNT(l.lesson_id) AS lessons_given 
+    FROM
+        public.lesson l
+
+CREATE VIEW access_bookings_view AS 
+    SELECT
+        EXTRACT(MONTH FROM b.timeslots) AS month, 
+        EXTRACT(YEAR FROM b.timeslots) AS year, tlv.lessons_given,
+    FROM 
+        total_lessons_view tlv
+    JOIN
+        public.bookings b ON tlv.booking_id = b.booking_id
+
+CREATE VIEW access_total_given_lessons_view AS 
+    SELECT
+        month,
+        year, 
+        lessons_given,
+    FROM 
+        access_bookings_view abv
+    JOIN
+        public.lessons_given_from_teacher lgtf ON abv.lesson_id = lgtf.lesson_id
+
+CREATE VIEW choose_year_view AS 
+    SELECT
+        month,
+        year, 
+        lessons_given,
+    FROM 
+        access_total_given_lessons_view yv
+    WHERE
+        year = 2015       
+
+SELECT 
+    month,
+    year,
+    lessons_given, 
+FROM
+    choose_year_view 
+GROUP BY
+    month, 
+    year
+ORDER BY
+    month;
+
+-- copied from sql shell terminal
+
+| month | lessons_given |
+|------------|---------------|
+|    1   |     10    |
+|    2   |     15    |
+|    3   |     12    |
+|    4   |     18    |
+|    5   |     20    |
+|    6   |     14    |
+|    7   |     22    |
+|    8   |     16    |
+|    9   |     25    |
+|    10   |     19    |
+|    11   |     13    |
+|    12   |     17    |
