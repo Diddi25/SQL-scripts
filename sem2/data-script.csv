@@ -1,0 +1,426 @@
+-- public.available_locations definition
+
+-- Drop table
+
+-- DROP TABLE public.available_locations;
+
+CREATE TABLE public.available_locations (
+	locations varchar NOT NULL,
+	CONSTRAINT available_locations_pkey PRIMARY KEY (locations)
+);
+
+
+-- public.available_teachers definition
+
+-- Drop table
+
+-- DROP TABLE public.available_teachers;
+
+CREATE TABLE public.available_teachers (
+	teacher varchar NOT NULL,
+	CONSTRAINT available_teachers_pkey PRIMARY KEY (teacher)
+);
+
+
+-- public.available_timeslots definition
+
+-- Drop table
+
+-- DROP TABLE public.available_timeslots;
+
+CREATE TABLE public.available_timeslots (
+	timeslots time NOT NULL,
+	CONSTRAINT available_timeslots_pkey PRIMARY KEY (timeslots)
+);
+
+
+-- public.instrument definition
+
+-- Drop table
+
+-- DROP TABLE public.instrument;
+
+CREATE TABLE public.instrument (
+	instrument_id int4 NOT NULL,
+	"name" varchar NULL,
+	"type" varchar NULL,
+	brand varchar NULL,
+	CONSTRAINT instrument_pkey PRIMARY KEY (instrument_id)
+);
+
+
+-- public.parent_phone_nr definition
+
+-- Drop table
+
+-- DROP TABLE public.parent_phone_nr;
+
+CREATE TABLE public.parent_phone_nr (
+	phone_nr varchar NULL,
+	person_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	parent_name varchar NULL,
+	CONSTRAINT parent_phone_nr_phone_nr_key UNIQUE (phone_nr)
+);
+
+
+-- public.person definition
+
+-- Drop table
+
+-- DROP TABLE public.person;
+
+CREATE TABLE public.person (
+	person_nr varchar NULL,
+	"name" varchar NULL,
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	CONSTRAINT person_pkey PRIMARY KEY (id)
+);
+
+
+-- public.price_instrument definition
+
+-- Drop table
+
+-- DROP TABLE public.price_instrument;
+
+CREATE TABLE public.price_instrument (
+	instrument_price varchar NOT NULL,
+	CONSTRAINT price_instrument_pkey PRIMARY KEY (instrument_price)
+);
+
+
+-- public.price_per_lessontype definition
+
+-- Drop table
+
+-- DROP TABLE public.price_per_lessontype;
+
+CREATE TABLE public.price_per_lessontype (
+	lesson_type_price varchar NOT NULL,
+	CONSTRAINT price_per_lessontype_pkey PRIMARY KEY (lesson_type_price)
+);
+
+
+-- public.prices_skillevel definition
+
+-- Drop table
+
+-- DROP TABLE public.prices_skillevel;
+
+CREATE TABLE public.prices_skillevel (
+	skill_level_price varchar NOT NULL,
+	CONSTRAINT prices_skillevel_pkey PRIMARY KEY (skill_level_price)
+);
+
+
+-- public.address definition
+
+-- Drop table
+
+-- DROP TABLE public.address;
+
+CREATE TABLE public.address (
+	city varchar NULL,
+	zip varchar NULL,
+	street varchar NULL,
+	person_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	CONSTRAINT address_pkey PRIMARY KEY (person_id),
+	CONSTRAINT address_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id)
+);
+
+
+-- public.contact_person definition
+
+-- Drop table
+
+-- DROP TABLE public.contact_person;
+
+CREATE TABLE public.contact_person (
+	parent_name varchar NULL,
+	person_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	CONSTRAINT contact_person_pkey PRIMARY KEY (person_id),
+	CONSTRAINT contact_person_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id)
+);
+
+
+-- public.email definition
+
+-- Drop table
+
+-- DROP TABLE public.email;
+
+CREATE TABLE public.email (
+	email_address varchar NOT NULL,
+	person_id int4 NULL,
+	CONSTRAINT email_pkey PRIMARY KEY (email_address),
+	CONSTRAINT email_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id)
+);
+
+
+-- public.instructor definition
+
+-- Drop table
+
+-- DROP TABLE public.instructor;
+
+CREATE TABLE public.instructor (
+	skill_level varchar NULL,
+	person_id int4 NULL,
+	instructor_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	CONSTRAINT instructor_pkey PRIMARY KEY (instructor_id),
+	CONSTRAINT instructor_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id)
+);
+
+
+-- public.instrument_skills definition
+
+-- Drop table
+
+-- DROP TABLE public.instrument_skills;
+
+CREATE TABLE public.instrument_skills (
+	instructor_id int4 NOT NULL,
+	instrument_id int4 NOT NULL,
+	CONSTRAINT instrument_skills_instrument_id_key UNIQUE (instrument_id),
+	CONSTRAINT instrument_skills_pkey PRIMARY KEY (instructor_id, instrument_id),
+	CONSTRAINT instrument_skills_instructor_id_fkey FOREIGN KEY (instructor_id) REFERENCES public.instructor(instructor_id),
+	CONSTRAINT instrument_skills_instrument_id_fkey FOREIGN KEY (instrument_id) REFERENCES public.instrument(instrument_id)
+);
+
+
+-- public.intrument_quantity definition
+
+-- Drop table
+
+-- DROP TABLE public.intrument_quantity;
+
+CREATE TABLE public.intrument_quantity (
+	quantity varchar NOT NULL,
+	instrument_id int4 NULL,
+	CONSTRAINT intrument_quantity_instrument_id_key UNIQUE (instrument_id),
+	CONSTRAINT intrument_quantity_pkey PRIMARY KEY (quantity),
+	CONSTRAINT intrument_quantity_instrument_id_fkey FOREIGN KEY (instrument_id) REFERENCES public.instrument(instrument_id)
+);
+
+
+-- public.lesson definition
+
+-- Drop table
+
+-- DROP TABLE public.lesson;
+
+CREATE TABLE public.lesson (
+	skill_level varchar NULL,
+	"location" varchar NULL,
+	lesson_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	genre varchar NULL,
+	instructor_id int4 NULL,
+	CONSTRAINT lesson_pkey PRIMARY KEY (lesson_id),
+	CONSTRAINT lesson_instructor_id_fkey FOREIGN KEY (instructor_id) REFERENCES public.instructor(instructor_id)
+);
+
+
+-- public.lesson_instrument_types definition
+
+-- Drop table
+
+-- DROP TABLE public.lesson_instrument_types;
+
+CREATE TABLE public.lesson_instrument_types (
+	instrument_type varchar NOT NULL,
+	lesson_id int4 NULL,
+	CONSTRAINT lesson_instrument_types_lesson_id_key UNIQUE (lesson_id),
+	CONSTRAINT lesson_instrument_types_pkey PRIMARY KEY (instrument_type),
+	CONSTRAINT lesson_instrument_types_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lesson(lesson_id)
+);
+
+
+-- public.lesson_type definition
+
+-- Drop table
+
+-- DROP TABLE public.lesson_type;
+
+CREATE TABLE public.lesson_type (
+	lesson_type varchar NOT NULL,
+	lesson_id int4 NULL,
+	CONSTRAINT lesson_type_lesson_id_key UNIQUE (lesson_id),
+	CONSTRAINT lesson_type_pkey PRIMARY KEY (lesson_type),
+	CONSTRAINT lesson_type_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lesson(lesson_id)
+);
+
+
+-- public.lessons_given_from_teacher definition
+
+-- Drop table
+
+-- DROP TABLE public.lessons_given_from_teacher;
+
+CREATE TABLE public.lessons_given_from_teacher (
+	nr_of_lessons int4 NULL,
+	instructor_id int4 NOT NULL,
+	lesson_id int4 NOT NULL,
+	CONSTRAINT lessons_given_from_teacher_lesson_id_key UNIQUE (lesson_id),
+	CONSTRAINT lessons_given_from_teacher_pkey PRIMARY KEY (instructor_id, lesson_id),
+	CONSTRAINT lessons_given_from_teacher_instructor_id_fkey FOREIGN KEY (instructor_id) REFERENCES public.instructor(instructor_id),
+	CONSTRAINT lessons_given_from_teacher_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lesson(lesson_id)
+);
+
+
+-- public.person_phone_nr definition
+
+-- Drop table
+
+-- DROP TABLE public.person_phone_nr;
+
+CREATE TABLE public.person_phone_nr (
+	phone_nr varchar NOT NULL,
+	person_id int4 NULL,
+	CONSTRAINT person_phone_nr_pkey PRIMARY KEY (phone_nr),
+	CONSTRAINT person_phone_nr_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id)
+);
+
+
+-- public.prices definition
+
+-- Drop table
+
+-- DROP TABLE public.prices;
+
+CREATE TABLE public.prices (
+	instrument_price varchar NULL,
+	lesson_type_price varchar NULL,
+	skill_level_price varchar NULL,
+	period_price_id int4 NOT NULL,
+	CONSTRAINT prices_pkey PRIMARY KEY (period_price_id),
+	CONSTRAINT prices_instrument_price_fkey FOREIGN KEY (instrument_price) REFERENCES public.price_instrument(instrument_price),
+	CONSTRAINT prices_lesson_type_price_fkey FOREIGN KEY (lesson_type_price) REFERENCES public.price_per_lessontype(lesson_type_price),
+	CONSTRAINT prices_skill_level_price_fkey FOREIGN KEY (skill_level_price) REFERENCES public.prices_skillevel(skill_level_price)
+);
+
+
+-- public.student definition
+
+-- Drop table
+
+-- DROP TABLE public.student;
+
+CREATE TABLE public.student (
+	skill_level varchar NULL,
+	student_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	person_id int4 NULL,
+	CONSTRAINT student_pkey PRIMARY KEY (student_id),
+	CONSTRAINT student_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id)
+);
+
+
+-- public.booked_lessons_student definition
+
+-- Drop table
+
+-- DROP TABLE public.booked_lessons_student;
+
+CREATE TABLE public.booked_lessons_student (
+	total_nr_of_booked_lessons int4 NULL,
+	student_id int4 NULL,
+	period_price_id int4 NULL,
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	CONSTRAINT booked_lessons_student_pkey PRIMARY KEY (id),
+	CONSTRAINT booked_lessons_student_student_id_key UNIQUE (student_id),
+	CONSTRAINT booked_lessons_student_period_price_id_fkey FOREIGN KEY (period_price_id) REFERENCES public.prices(period_price_id),
+	CONSTRAINT booked_lessons_student_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.student(student_id)
+);
+
+
+-- public.bookings definition
+
+-- Drop table
+
+-- DROP TABLE public.bookings;
+
+CREATE TABLE public.bookings (
+	booking_id int4 NOT NULL,
+	locations varchar NULL,
+	timeslots time NULL,
+	teacher varchar NULL,
+	student_id int4 NULL,
+	CONSTRAINT bookings_pkey PRIMARY KEY (booking_id),
+	CONSTRAINT bookings_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.student(student_id)
+);
+
+
+-- public.instrument_stock definition
+
+-- Drop table
+
+-- DROP TABLE public.instrument_stock;
+
+CREATE TABLE public.instrument_stock (
+	instrument_name varchar NULL,
+	rental_status varchar NULL,
+	instrument_id int4 NOT NULL,
+	quantity varchar NOT NULL,
+	CONSTRAINT instrument_stock_instrument_id_key UNIQUE (instrument_id),
+	CONSTRAINT instrument_stock_pkey PRIMARY KEY (instrument_id, quantity),
+	CONSTRAINT instrument_stock_quantity_key UNIQUE (quantity),
+	CONSTRAINT instrument_stock_instrument_id_fkey FOREIGN KEY (instrument_id) REFERENCES public.instrument(instrument_id),
+	CONSTRAINT instrument_stock_quantity_fkey FOREIGN KEY (quantity) REFERENCES public.intrument_quantity(quantity)
+);
+
+
+-- public.lessons_taken_per_month definition
+
+-- Drop table
+
+-- DROP TABLE public.lessons_taken_per_month;
+
+CREATE TABLE public.lessons_taken_per_month (
+	nr_of_lessons int4 NULL,
+	lesson_types varchar NULL,
+	student_id int4 NOT NULL,
+	lesson_id int4 NOT NULL,
+	CONSTRAINT lessons_taken_per_month_lesson_id_key UNIQUE (lesson_id),
+	CONSTRAINT lessons_taken_per_month_pkey PRIMARY KEY (student_id, lesson_id),
+	CONSTRAINT lessons_taken_per_month_student_id_key UNIQUE (student_id),
+	CONSTRAINT lessons_taken_per_month_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lesson(lesson_id),
+	CONSTRAINT lessons_taken_per_month_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.student(student_id)
+);
+
+
+-- public.nr_students_in_lesson definition
+
+-- Drop table
+
+-- DROP TABLE public.nr_students_in_lesson;
+
+CREATE TABLE public.nr_students_in_lesson (
+	nr_of_students varchar NULL,
+	student_id int4 NOT NULL,
+	lesson_id int4 NOT NULL,
+	CONSTRAINT nr_students_in_lesson_lesson_id_key UNIQUE (lesson_id),
+	CONSTRAINT nr_students_in_lesson_pkey PRIMARY KEY (student_id, lesson_id),
+	CONSTRAINT nr_students_in_lesson_student_id_key UNIQUE (student_id),
+	CONSTRAINT nr_students_in_lesson_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lesson(lesson_id),
+	CONSTRAINT nr_students_in_lesson_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.student(student_id)
+);
+
+
+-- public.rental definition
+
+-- Drop table
+
+-- DROP TABLE public.rental;
+
+CREATE TABLE public.rental (
+	quantity varchar NULL,
+	student_id int4 NOT NULL,
+	rented_time timestamp NULL,
+	lease_period time NULL,
+	instrument_id int4 NOT NULL,
+	rental_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	CONSTRAINT rental_instrument_id_key UNIQUE (instrument_id),
+	CONSTRAINT rental_pkey PRIMARY KEY (student_id, instrument_id, rental_id),
+	CONSTRAINT rental_student_id_key UNIQUE (student_id),
+	CONSTRAINT rental_instrument_id_fkey FOREIGN KEY (instrument_id) REFERENCES public.instrument(instrument_id),
+	CONSTRAINT rental_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.student(student_id)
+);
