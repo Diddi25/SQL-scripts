@@ -1,0 +1,244 @@
+CREATE TABLE frukt.classrooms (
+	room_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	description varchar(50) NULL DEFAULT ''::character varying,
+	zip varchar(50) NULL DEFAULT ''::character varying,
+	street varchar(50) NULL DEFAULT ''::character varying,
+	city varchar(50) NULL DEFAULT ''::character varying,
+	CONSTRAINT classrooms_pkey PRIMARY KEY (room_id)
+);
+
+
+-- frukt.email definition
+
+-- Drop table
+
+-- DROP TABLE frukt.email;
+
+CREATE TABLE frukt.email (
+	email_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	email varchar(50) NULL DEFAULT ''::character varying,
+	CONSTRAINT email_pkey PRIMARY KEY (email_id)
+);
+
+
+-- frukt.instrument definition
+
+-- Drop table
+
+-- DROP TABLE frukt.instrument;
+
+CREATE TABLE frukt.instrument (
+	instrument_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	"type" varchar(50) NULL DEFAULT ''::character varying,
+	"name" varchar(50) NULL DEFAULT ''::character varying,
+	brand varchar(50) NULL DEFAULT ''::character varying,
+	quantity_in_stock varchar(50) NULL DEFAULT ''::character varying,
+	price varchar(50) NULL DEFAULT ''::character varying,
+	CONSTRAINT instrument_pkey PRIMARY KEY (instrument_id)
+);
+
+
+-- frukt.lesson_type definition
+
+-- Drop table
+
+-- DROP TABLE frukt.lesson_type;
+
+CREATE TABLE frukt.lesson_type (
+	lesson_type_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	price varchar(50) NULL DEFAULT ''::character varying,
+	lesson_type varchar(50) NULL DEFAULT ''::character varying,
+	CONSTRAINT lesson_type_pkey PRIMARY KEY (lesson_type_id)
+);
+
+
+-- frukt.person definition
+
+-- Drop table
+
+-- DROP TABLE frukt.person;
+
+CREATE TABLE frukt.person (
+	person_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	person_nr varchar(50) NULL DEFAULT ''::character varying,
+	"name" varchar(50) NULL DEFAULT ''::character varying,
+	birth varchar(50) NULL DEFAULT ''::character varying,
+	city varchar(50) NULL DEFAULT ''::character varying,
+	zip varchar(50) NULL DEFAULT ''::character varying,
+	street varchar(50) NULL DEFAULT ''::character varying,
+	CONSTRAINT person_pkey PRIMARY KEY (person_id)
+);
+
+
+-- frukt.phone definition
+
+-- Drop table
+
+-- DROP TABLE frukt.phone;
+
+CREATE TABLE frukt.phone (
+	phone_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	phone_number varchar(50) NULL DEFAULT ''::character varying,
+	CONSTRAINT phone_pkey PRIMARY KEY (phone_id)
+);
+
+
+-- frukt.skill definition
+
+-- Drop table
+
+-- DROP TABLE frukt.skill;
+
+CREATE TABLE frukt.skill (
+	skill_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	price varchar(50) NULL DEFAULT ''::character varying,
+	skill_level varchar(50) NULL DEFAULT ''::character varying,
+	CONSTRAINT skill_pkey PRIMARY KEY (skill_id)
+);
+
+
+-- frukt.instructor definition
+
+-- Drop table
+
+-- DROP TABLE frukt.instructor;
+
+CREATE TABLE frukt.instructor (
+	instructor_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	person_id int4 NOT NULL,
+	email varchar(50) NULL DEFAULT ''::character varying,
+	phone varchar(50) NULL DEFAULT ''::character varying,
+	CONSTRAINT instructor_pkey PRIMARY KEY (instructor_id),
+	CONSTRAINT instructor_person_id_fkey FOREIGN KEY (person_id) REFERENCES frukt.person(person_id)
+);
+
+
+-- frukt.lesson definition
+
+-- Drop table
+
+-- DROP TABLE frukt.lesson;
+
+CREATE TABLE frukt.lesson (
+	lesson_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	instructor_id int4 NOT NULL,
+	skill_id int4 NULL,
+	lesson_type_id int4 NULL,
+	room_id int4 NULL,
+	start_time timestamp NOT NULL,
+	end_time varchar(50) NULL DEFAULT ''::character varying,
+	max_students int4 NULL,
+	min_students int4 NULL,
+	genre varchar(50) NULL DEFAULT ''::character varying,
+	CONSTRAINT lesson_pkey PRIMARY KEY (lesson_id),
+	CONSTRAINT lesson_instructor_id_fkey FOREIGN KEY (instructor_id) REFERENCES frukt.instructor(instructor_id),
+	CONSTRAINT lesson_lesson_type_id_fkey FOREIGN KEY (lesson_type_id) REFERENCES frukt.lesson_type(lesson_type_id),
+	CONSTRAINT lesson_room_id_fkey FOREIGN KEY (room_id) REFERENCES frukt.classrooms(room_id),
+	CONSTRAINT lesson_skill_id_fkey FOREIGN KEY (skill_id) REFERENCES frukt.skill(skill_id)
+);
+
+
+-- frukt.lesson_instrument definition
+
+-- Drop table
+
+-- DROP TABLE frukt.lesson_instrument;
+
+CREATE TABLE frukt.lesson_instrument (
+	instrument_id int4 NOT NULL,
+	lesson_id int4 NOT NULL,
+	CONSTRAINT lesson_instrument_pkey PRIMARY KEY (instrument_id, lesson_id),
+	CONSTRAINT lesson_instrument_instrument_id_fkey FOREIGN KEY (instrument_id) REFERENCES frukt.instrument(instrument_id),
+	CONSTRAINT lesson_instrument_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES frukt.lesson(lesson_id)
+);
+
+-- frukt.sibling definition
+
+-- Drop table
+
+-- DROP TABLE frukt.sibling;
+
+CREATE TABLE frukt.sibling (
+	sibling_id int4 NOT NULL,
+	student_id int4 NOT NULL,
+	CONSTRAINT sibling_pkey PRIMARY KEY (sibling_id, student_id),
+	CONSTRAINT sibling_student_id_fkey FOREIGN KEY (student_id) REFERENCES frukt.student(student_id)
+);
+
+-- frukt.student definition
+
+-- Drop table
+
+-- DROP TABLE frukt.student;
+
+CREATE TABLE frukt.student (
+	person_id int4 NOT NULL,
+	student_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	CONSTRAINT student_pkey PRIMARY KEY (student_id),
+	CONSTRAINT student_person_id_fkey FOREIGN KEY (person_id) REFERENCES frukt.person(person_id)
+);
+
+
+-- frukt.student_lesson definition
+
+-- Drop table
+
+-- DROP TABLE frukt.student_lesson;
+
+CREATE TABLE frukt.student_lesson (
+	student_id int4 NOT NULL,
+	lesson_id int4 NOT NULL,
+	CONSTRAINT student_lesson_pkey PRIMARY KEY (student_id, lesson_id),
+	CONSTRAINT student_lesson_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES frukt.lesson(lesson_id),
+	CONSTRAINT student_lesson_student_id_fkey FOREIGN KEY (student_id) REFERENCES frukt.student(student_id)
+);
+
+
+-- frukt.person_email definition
+
+-- Drop table
+
+-- DROP TABLE frukt.person_email;
+
+CREATE TABLE frukt.person_email (
+	is_contact_person bool NULL,
+	email_id int4 NOT NULL,
+	student_id int4 NOT NULL,
+	CONSTRAINT person_email_pkey PRIMARY KEY (email_id, student_id),
+	CONSTRAINT person_email_email_id_fkey FOREIGN KEY (email_id) REFERENCES frukt.email(email_id),
+	CONSTRAINT person_email_student_id_fkey FOREIGN KEY (student_id) REFERENCES frukt.student(student_id)
+);
+
+
+-- frukt.person_phone definition
+
+-- Drop table
+
+-- DROP TABLE frukt.person_phone;
+
+CREATE TABLE frukt.person_phone (
+	phone_id int4 NOT NULL,
+	is_contact_person bool NULL,
+	student_id int4 NOT NULL,
+	CONSTRAINT person_phone_pkey PRIMARY KEY (phone_id, student_id),
+	CONSTRAINT person_phone_phone_id_fkey FOREIGN KEY (phone_id) REFERENCES frukt.phone(phone_id),
+	CONSTRAINT person_phone_student_id_fkey FOREIGN KEY (student_id) REFERENCES frukt.student(student_id)
+);
+
+
+-- frukt.rental definition
+
+-- Drop table
+
+-- DROP TABLE frukt.rental;
+
+CREATE TABLE frukt.rental (
+	rental_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	instrument_id int4 NULL,
+	student_id int4 NULL,
+	start_rented timestamp NOT NULL,
+	end_rented timestamp NULL,
+	CONSTRAINT rental_pkey PRIMARY KEY (rental_id),
+	CONSTRAINT rental_instrument_id_fkey FOREIGN KEY (instrument_id) REFERENCES frukt.instrument(instrument_id),
+	CONSTRAINT rental_student_id_fkey FOREIGN KEY (student_id) REFERENCES frukt.student(student_id)
+);

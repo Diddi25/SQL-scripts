@@ -1,0 +1,247 @@
+INSERT INTO person (person_nr, name, birth, city, zip, street)
+VALUES
+  ('123456-7890', 'John Doe', '1990-01-15', 'Stockholm', '12345', 'Main Street'),
+  ('234567-8901', 'Jane Smith', '1988-05-20', 'Gothenburg', '54321', 'Highway Avenue'),
+  ('345678-9012', 'Alice Johnson', '1995-11-03', 'Malmö', '67890', 'Park Road'),
+  ('456789-0123', 'Bob Anderson', '1992-08-12', 'Uppsala', '09876', 'Lake Street'),
+  ('567890-1234', 'Eva Wilson', '1998-03-25', 'Lund', '13579', 'Mountain View'),
+  ('678901-2345', 'David Miller', '1993-07-08', 'Linköping', '24680', 'Valley Lane'),
+  ('789012-3456', 'Sara Brown', '1996-02-18', 'Helsingborg', '98765', 'Ocean Drive'),
+  ('890123-4567', 'Michael Taylor', '1994-09-30', 'Örebro', '43210', 'Sunset Boulevard'),
+  ('901234-5678', 'Emma Clark', '1997-06-14', 'Jönköping', '56789', 'River Street'),
+  ('012345-6789', 'Alexis White', '1991-12-07', 'Västerås', '23456', 'Forest Lane'),
+  ('123456-7891', 'Chris Carter', '1999-04-17', 'Norrköping', '87654', 'Meadow Road'),
+  ('234567-8902', 'Olivia Lee', '1987-10-29', 'Kalmar', '32109', 'Field Avenue'),
+  ('345678-9013', 'Daniel Harris', '1990-06-02', 'Karlstad', '65432', 'Sunrise Street'),
+  ('456789-0124', 'Sophia Martinez', '1993-01-10', 'Sundsvall', '10987', 'Hillside Drive'),
+  ('567890-1235', 'Kevin Brown', '1996-08-23', 'Växjö', '54321', 'Green Lane'),
+  ('678901-2346', 'Ava Garcia', '1994-03-07', 'Eskilstuna', '87654', 'Lakeview Road'),
+  ('789012-3457', 'Mason Anderson', '1989-11-15', 'Halmstad', '32109', 'Maple Street'),
+  ('890123-4568', 'Harper Turner', '1998-05-28', 'Östersund', '65432', 'Cherry Lane'),
+  ('901234-5679', 'Logan Evans', '1992-02-01', 'Luleå', '10987', 'Blossom Avenue'),
+  ('012345-6790', 'Penelope Ward', '1995-09-12', 'Gävle', '54321', 'Pine Street');
+
+ INSERT INTO instructor (person_id, email, phone)
+VALUES
+  (1, 'john.doe@example.com', '070-1234567'),
+  (2, 'jane.smith@example.com', '072-2345678'),
+  (3, 'alice.johnson@example.com', '073-3456789');
+
+ 
+ INSERT INTO instrument (type, name, brand, quantity_in_stock, price)
+VALUES
+  ('Guitar', 'Acoustic Guitar', 'Fender', '10', '5000'),
+  ('Piano', 'Digital Piano', 'Yamaha', '5', '10000'),
+  ('Drums', 'Drum Set', 'Pearl', '3', '8000'),
+  ('Violin', 'Violin', 'Stradivarius', '8', '7000'),
+  ('Trumpet', 'Trumpet', 'Bach', '6', '6000');
+ 
+ INSERT INTO lesson_type (price, lesson_type)
+VALUES
+  ('100', 'Group'),
+    ('100', 'Ensemble'),
+  ('150', 'Individual');
+
+ 
+ INSERT INTO skill (price, skill_level)
+VALUES
+  ('50', 'Beginner'),
+  ('75', 'Intermediate'),
+  ('100', 'Advanced');
+
+INSERT INTO classrooms (description, zip, street, city)
+VALUES
+  ('Room A', '12345', 'Main Street', 'Stockholm'),
+  ('Room B', '54321', 'Highway Avenue', 'Gothenburg'),
+  ('Room C', '67890', 'Park Road', 'Malmö'),
+  ('Room D', '09876', 'Lake Street', 'Uppsala'),
+  ('Room E', '13579', 'Mountain View', 'Lund');
+
+ 
+ INSERT INTO student (person_id)
+VALUES
+  (4),
+  (5),
+  (6),
+  (7),
+  (8),
+  (9),
+  (10),
+  (11),
+  (12),
+  (13),
+  (14),
+  (15),
+  (16),
+  (17),
+  (18),
+  (19),
+  (20);
+ 
+
+INSERT INTO phone (phone_number)
+VALUES
+  ('070-111 11 11'),
+  ('070-222 22 22'),
+  ('070-333 33 33'),
+  ('070-444 44 44'),
+  ('070-555 55 55'),
+  ('070-666 66 66'),
+  ('070-777 77 77'),
+  ('070-888 88 88'),
+  ('070-999 99 99'),
+  ('070-101 01 01'),
+  ('070-202 02 02'),
+  ('070-303 03 03'),
+  ('070-404 04 04'),
+  ('070-505 05 05'),
+  ('070-606 06 06'),
+  ('070-707 07 07'),
+  ('070-808 08 08'),
+  ('070-909 09 09'),
+  ('070-010 10 10'),
+  ('070-121 12 12');
+ 
+ INSERT INTO sibling (sibling_id, student_id)
+VALUES
+  (1, 4),
+  (2, 5),
+    (3, 5);
+   
+   
+INSERT INTO person_phone (phone_id, is_contact_person, student_id)
+VALUES
+  (1, false, 7),
+  (2, false, 8),
+  (3, false, 9),
+  (4, false, 10),
+  (5, false, 11),
+  (6, false, 12),
+  (7, true, 13),
+  (8, false, 14),
+  (9, false, 15),
+  (10, false, 16),
+  (11, false, 17),
+  (12, false, 17),
+  (13, false, 17),
+  (14, false, 17),
+  (15, false, 4),
+  (16, false, 5),
+  (17, true, 6),
+  (18, false, 7),
+  (19, false, 8),
+  (20, false, 9);
+ 
+ INSERT INTO instructor ( person_id, email, phone)
+VALUES
+  ( 1, 'john.doe@example.com', '070-78908675'),
+  ( 2, 'jane.smith@example.com', '070-567-8901'),
+  ( 3, 'alice.johnson@example.com', '070-678-9012'),
+  ( 6, 'david.miller@example.com', '070-901-2345'),
+  ( 7, 'sara.brown@example.com', '070-012-3456');
+ 
+ INSERT INTO email (email)
+VALUES
+  ('john.doe@example.com'),
+  ('jane.smith@example.com'),
+  ('alice.johnson@example.com'),
+  ('bob.anderson@example.com'),
+  ('eva.wilson@example.com'),
+  ('david.miller@example.com'),
+  ('sara.brown@example.com'),
+  ('michael.taylor@example.com'),
+  ('emma.clark@example.com'),
+  ('alexis.white@example.com'),
+  ('chris.carter@example.com'),
+  ('olivia.lee@example.com'),
+  ('daniel.harris@example.com'),
+  ('sophia.martinez@example.com'),
+  ('kevin.brown@example.com'),
+  ('ava.garcia@example.com'),
+  ('mason.anderson@example.com'),
+  ('harper.turner@example.com'),
+  ('logan.evans@example.com'),
+  ('penelope.ward@example.com');
+  
+ INSERT INTO person_email (is_contact_person, email_id, student_id)
+VALUES
+  (true, 1, 4),
+  (false, 2, 5),
+  (true, 3, 6),
+  (false, 4, 7),
+  (true, 5, 8),
+  (false, 6, 9),
+  (true, 7, 10),
+  (false, 8, 11),
+  (true, 9, 12),
+  (false, 10, 13),
+  (true, 11, 14),
+  (false, 12, 15),
+  (true, 13, 16),
+  (false, 14, 17),
+  (true, 15, 17),
+  (false, 18, 4),
+  (true, 19, 5),
+  (false, 20, 6);
+  
+ 
+ 
+INSERT INTO lesson (instructor_id, skill_id, lesson_type_id, room_id, start_time, end_time, max_students, min_students, genre)
+VALUES
+  (1, 2, 1, 1, '2023-11-08 12:00:00', '2024-11-08 14:00:00', 15, 8, 'Pop'),
+  (2, 3, 2, 2, '2023-11-09 16:00:00', '2024-11-09 18:00:00', 10, 5, 'Blues'),
+  (3, 1, 1, 3, '2023-11-10 20:00:00', '2023-11-10 22:00:00', 18, 9, 'Funk'),
+  (1, 2, 2, 4, '2023-12-11 14:00:00', '2023-12-11 16:00:00', 12, 6, 'Country'),
+  (2, 3, 1, 5, '2023-12-12 18:00:00', '2023-12-12 20:00:00', 14, 7, 'Reggae'),
+  (3, 1, 2, 1, '2023-12-13 10:00:00', '2023-12-13 12:00:00', 20, 10, 'Soul'),
+  (1, 2, 1, 2, '2023-12-14 12:00:00', '2023-12-14 14:00:00', 15, 8, 'Metal'),
+  (2, 3, 2, 3, '2023-12-15 16:00:00', '2023-12-15 18:00:00', 10, 5, 'Electronic'),
+  (3, 1, 1, 4, '2023-12-16 20:00:00', '2023-12-16 22:00:00', 18, 9, 'Hip-Hop'),
+  (1, 2, 2, 5, '2023-12-17 14:00:00', '2023-12-17 16:00:00', 12, 6, 'R&B'),
+  (2, 3, 1, 1, '2023-12-18 18:00:00', '2023-12-18 20:00:00', 14, 7, 'Latin'),
+  (3, 1, 2, 2, '2023-12-19 10:00:00', '2023-12-19 12:00:00', 20, 10, 'Jungle'),
+  (1, 2, 1, 3, '2023-12-20 12:00:00', '2023-12-20 14:00:00', 15, 8, 'Folk'),
+  (2, 3, 2, 4, '2023-12-21 16:00:00', '2023-12-21 18:00:00', 10, 5, 'Ambient'),
+  (3, 1, 1, 5, '2024-01-08 20:00:00', '2024-01-08 22:00:00', 18, 9, 'Indie'),
+  (1, 2, 2, 1, '2024-01-09 14:00:00', '2024-01-09 16:00:00', 12, 6, 'Indie'),
+  (2, 3, 2, 2, '2024-01-11 18:00:00', '2024-01-11 20:00:00', 14, 7, 'Disco');
+ 
+ INSERT INTO lesson_instrument (instrument_id, lesson_id)
+VALUES
+  (1, 1),
+  (2, 2),
+  (3, 3),
+  (4, 4),
+  (5, 5);
+
+ 
+ INSERT INTO rental (instrument_id, student_id, start_rented, end_rented)
+VALUES
+  (1, 8, '2024-01-10 08:00:00', '2024-01-20 08:00:00'),
+  (2, 4, '2024-01-12 10:00:00', '2024-01-22 10:00:00'),
+  (3, 5, '2024-01-14 12:00:00', '2024-01-24 12:00:00'),
+  (4, 5, '2024-01-16 14:00:00', '2024-01-26 14:00:00'),
+  (5, 6, '2024-01-18 16:00:00', '2024-01-28 16:00:00');
+ 
+INSERT INTO student_lesson (student_id, lesson_id)
+VALUES
+  (1, 1),
+  (2, 2),
+  (3, 3),
+  (4, 4),
+  (5, 5),
+  (6, 1),
+  (7, 2),
+  (8, 3),
+  (9, 4),
+  (10, 5),
+  (11, 1),
+  (12, 2),
+  (13, 3),
+  (14, 4),
+  (15, 5),
+  (16, 1),
+  (17, 2),
+  (1, 3),
+  (2, 4),
+  (3, 5);

@@ -1,0 +1,27 @@
+
+SELECT
+    i.instructor_id AS "Instructor Id",
+    p.name AS "Name",
+    COUNT(l.lesson_id) AS "No of Lessons"
+FROM
+    frukt.instructor i
+JOIN
+    frukt.lesson l ON i.instructor_id = l.instructor_id
+JOIN
+    frukt.person p ON i.person_id = p.person_id
+WHERE
+    DATE_TRUNC('MONTH', l.start_time) = '2023-12-01'::date
+GROUP BY
+    i.instructor_id, p.name
+HAVING
+    COUNT(l.lesson_id) > 3 
+ORDER BY
+    COUNT(l.lesson_id) DESC;
+
+Output:
+
+Instructor Id|Name         |No of Lessons|
+-------------+-------------+-------------+
+            1|John Doe     |            5|
+            2|Jane Smith   |            5|
+            3|Alice Johnson|            4|

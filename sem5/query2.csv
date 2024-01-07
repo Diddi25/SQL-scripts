@@ -1,0 +1,25 @@
+
+CREATE OR REPLACE VIEW SiblingCount AS 
+    SELECT student_id, COUNT(sibling_id) AS count_siblings
+    FROM frukt.sibling
+    GROUP BY student_id;
+
+SELECT
+    n AS "No of Siblings",
+    COUNT(student_id) AS "No of Students"
+FROM
+    generate_series(0, 2) n
+LEFT JOIN
+    SiblingCount sc ON n = sc.count_siblings
+GROUP BY
+    n
+ORDER BY
+    n;
+
+Output:
+
+No of Siblings|No of Students|
+--------------+--------------+
+             0|             0|
+             1|             1|
+             2|             1|

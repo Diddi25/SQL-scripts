@@ -1,0 +1,39 @@
+
+CREATE OR REPLACE VIEW EnsembleAvailability AS 
+    SELECT
+        l.lesson_id,
+        l.start_time,
+        l.genre,
+        l.max_students,
+        COUNT(*) AS enrolled_students,
+        CASE
+            WHEN COUNT(*) = l.max_students THEN 'Full Booked'
+            WHEN COUNT(*) >= l.max_students - 2 THEN '1-2 Seats Left'
+            ELSE 'Many seats'
+        END AS availability
+    FROM
+        public.lesson l
+    WHERE
+        l.lesson_type_id = 2
+        AND l.start_time >= NOW()::date
+        AND l.start_time < NOW()::date + interval '1 week'
+    GROUP BY
+        l.lesson_id, l.start_time, l.genre, l.max_students;
+
+SELECT
+    e.lesson_id,
+    e.start_time,
+    e.genre,
+    e.availability,
+    TO_CHAR(e.start_time, 'Day') AS weekday
+FROM
+    EnsembleAvailability e
+ORDER BY
+    e.genre, e.start_time, e.availability;
+
+Output:
+
+lesson_id|start_time             |genre  |availability   |weekday  |
+---------+-----------------------+-------+---------------+---------+
+        16|2024-01-09 14:00:00.000|Indie  |Many seats|Tuesday  |
+        17|2024-01-11 18:00:00.000|Disco  |Many seats|Thursday |
