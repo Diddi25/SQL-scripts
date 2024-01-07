@@ -21,6 +21,8 @@ VALUES
   ('901234-5679', 'Logan Evans', '1992-02-01', 'Luleå', '10987', 'Blossom Avenue'),
   ('012345-6790', 'Penelope Ward', '1995-09-12', 'Gävle', '54321', 'Pine Street');
 
+-- If there occurs problem with the instructor_id, execute the query above and modify the person_id values below in entity instructor
+
  INSERT INTO instructor (person_id, email, phone)
 VALUES
   (1, 'john.doe@example.com', '070-1234567'),
