@@ -152,19 +152,6 @@ CREATE TABLE frukt.lesson_instrument (
 	CONSTRAINT lesson_instrument_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES frukt.lesson(lesson_id)
 );
 
--- frukt.sibling definition
-
--- Drop table
-
--- DROP TABLE frukt.sibling;
-
-CREATE TABLE frukt.sibling (
-	sibling_id int4 NOT NULL,
-	student_id int4 NOT NULL,
-	CONSTRAINT sibling_pkey PRIMARY KEY (sibling_id, student_id),
-	CONSTRAINT sibling_student_id_fkey FOREIGN KEY (student_id) REFERENCES frukt.student(student_id)
-);
-
 -- frukt.student definition
 
 -- Drop table
@@ -191,6 +178,19 @@ CREATE TABLE frukt.student_lesson (
 	CONSTRAINT student_lesson_pkey PRIMARY KEY (student_id, lesson_id),
 	CONSTRAINT student_lesson_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES frukt.lesson(lesson_id),
 	CONSTRAINT student_lesson_student_id_fkey FOREIGN KEY (student_id) REFERENCES frukt.student(student_id)
+);
+
+-- frukt.sibling definition
+
+-- Drop table
+
+-- DROP TABLE frukt.sibling;
+
+CREATE TABLE frukt.sibling (
+	sibling_id int4 NOT NULL,
+	student_id int4 NOT NULL,
+	CONSTRAINT sibling_pkey PRIMARY KEY (sibling_id, student_id),
+	CONSTRAINT sibling_student_id_fkey FOREIGN KEY (student_id) REFERENCES frukt.student(student_id)
 );
 
 
